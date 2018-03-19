@@ -1,0 +1,12 @@
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\obj\Debug\OpenTK IND.csprojResolveAssemblyReference.cache
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\obj\Debug\OpenTK IND.csproj.CoreCompileInputs.cache
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\bin\Debug\OpenTK IND.exe.config
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\bin\Debug\OpenTK IND.exe
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\bin\Debug\OpenTK IND.pdb
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\bin\Debug\OpenTK.dll
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\bin\Debug\OpenTK.pdb
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\bin\Debug\OpenTK.xml
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\bin\Debug\OpenTK.dll.config
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\obj\Debug\OpenTK IND.csproj.CopyComplete
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\obj\Debug\OpenTK IND.exe
+C:\Users\Josro\source\repos\OpenTK IND\OpenTK IND\obj\Debug\OpenTK IND.pdb

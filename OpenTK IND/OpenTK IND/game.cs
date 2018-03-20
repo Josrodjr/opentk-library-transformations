@@ -13,9 +13,11 @@ namespace OpenTK_IND
     {
         double state = 1.0;
         double scalests = 0.5;
-        double rotationx, rotationy, rotationz = 0.0;
-        float translatex, translatey, shearx, sheary = 0.0f;
+        double scalestsa = 0.5;
+        double rotationx, rotationy, rotationz, rotationxa, rotationya, rotationza = 0.0;
+        float translatex, translatey, shearx, sheary, translatexa, translateya, shearxa, shearya = 0.0f;
         int leaves, grass, wood, roof, bark, door;
+        bool doorstatus = false;
         GameWindow window;
         public game(GameWindow window)
         {
@@ -42,6 +44,14 @@ namespace OpenTK_IND
                if(e.KeyChar == 'Q')
             {
                 state = -1.0;
+            }
+               if(e.KeyChar == 'T' | e.KeyChar == 't')
+            {
+                doorstatus = true;
+            }
+            if (e.KeyChar == 'P' | e.KeyChar == 'p')
+            {
+                print_help();
             }
         }
 
@@ -113,15 +123,91 @@ namespace OpenTK_IND
             }
             if (k.IsKeyDown(Key.V))
             {
-                if(state == -1)
+                if (state == -1)
                 {
                     sheary -= 0.1f;
                 }
-                if(state == 1)
+                if (state == 1)
                 {
                     sheary += 0.1f;
                 }
             }
+
+            //para el arbol
+            //traslanciones
+            if (k.IsKeyDown(Key.J))
+            {
+                translatexa -= 0.5f;
+            }
+            if (k.IsKeyDown(Key.L))
+            {
+                translatexa += 0.5f;
+            }
+            if (k.IsKeyDown(Key.I))
+            {
+                translateya += 0.5f;
+            }
+            if (k.IsKeyDown(Key.K))
+            {
+                translateya -= 0.5f;
+            }
+
+            //rotaciones
+
+            if (k.IsKeyDown(Key.B))
+            {
+                rotationza += state;
+            }
+            if (k.IsKeyDown(Key.N))
+            {
+                rotationxa += state;
+            }
+            if (k.IsKeyDown(Key.M))
+            {
+                rotationya += state;
+            }
+
+            //scale
+
+            if (k.IsKeyDown(Key.Y))
+            {
+
+                scalestsa += 0.01d;
+
+            }
+            if (k.IsKeyDown(Key.U))
+            {
+                if (scalestsa > 0.02)
+                {
+                    scalestsa -= 0.01d;
+                }
+            }
+
+            //shear
+
+            if (k.IsKeyDown(Key.G))
+            {
+                if (state == -1)
+                {
+                    shearxa -= 0.1f;
+                }
+                if (state == 1)
+                {
+                    shearxa += 0.1f;
+                }
+            }
+            if (k.IsKeyDown(Key.H))
+            {
+                if (state == -1)
+                {
+                    shearya -= 0.1f;
+                }
+                if (state == 1)
+                {
+                    shearya += 0.1f;
+                }
+            }
+
 
         }
 
@@ -141,8 +227,8 @@ namespace OpenTK_IND
         {
 
             var test2 = new Matrix4(1, 0, SZ, 0,
-                                    0, 1, SZ, 0,
-                                    SZ, SZ, 1, 0,
+                                    0, 1, 0, 0,
+                                    0, 0, SZ-0.2f, 0,
                                     0, 0, 0, 1);
 
             GL.MultMatrix(ref test2);
@@ -154,20 +240,26 @@ namespace OpenTK_IND
             GL.LoadIdentity();
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            //RENDEREAR LA PUERTA
+
             GL.PushMatrix();
-            // GL.Translate(0f, 0f, -50.0f);
+            
             GL.Translate(translatex, translatey, -50.0f);
             GL.Rotate(rotationx, 1.0, 0.0, 0.0);
             GL.Rotate(rotationy, 0.0, 1.0, 0.0);
             GL.Rotate(rotationz, 0.0, 0.0, 1.0);
             GL.Scale(scalests, scalests, scalests);
-            //GL.Scale(0.5, 0.5, 0.5);
-
-            animat_door(0.5f);
-
+            
+            if (doorstatus == true)
+            {
+                animat_door(1.5f);
+            }
+            
             draw_door();
 
             GL.PopMatrix();
+
+            //RENDEREAR LA CASA
 
             GL.PushMatrix();
            // GL.Translate(0f, 0f, -50.0f);
@@ -184,19 +276,23 @@ namespace OpenTK_IND
 
             GL.PopMatrix();
 
+            //RENDEREAR EL ARBOL
+
             GL.PushMatrix();
             GL.Translate(25f, 0f, -35f);
-            GL.Translate(translatex, translatey, -50.0f);
-            GL.Rotate(rotationx, 1.0, 0.0, 0.0);
-            GL.Rotate(rotationy, 0.0, 1.0, 0.0);
-            GL.Rotate(rotationz, 0.0, 0.0, 1.0);
-            GL.Scale(scalests, scalests, scalests);
+            GL.Translate(translatexa, translateya, -50.0f);
+            GL.Rotate(rotationxa, 1.0, 0.0, 0.0);
+            GL.Rotate(rotationya, 0.0, 1.0, 0.0);
+            GL.Rotate(rotationza, 0.0, 0.0, 1.0);
+            GL.Scale(scalestsa, scalestsa, scalestsa);
 
-            shearobj(0f, 0f);
+            shearobj(shearxa, shearya);
 
             draw_tree();
 
             GL.PopMatrix();
+
+            //RENDEREAR EL PLANO
 
             GL.PushMatrix();
 
@@ -566,6 +662,26 @@ namespace OpenTK_IND
             bmp.UnlockBits(bmpdata);
 
             return bmpdata;
+        }
+
+        void print_help()
+        {
+            System.Console.Clear();
+            Console.WriteLine("Hola, bienvenido al menu de ayuda \nHemos agrupado el teclado en dos diferentes barras para realizar transformaciones con openGL\n");
+            Console.WriteLine("El boton  mas importante de la aplicacion es" + " Q " + "ya que si es" + " q " + "las transformaciones se aplicaran en una direccion y si es" + " Q " + "se aplicaran en otra direccion\n");
+            Console.WriteLine("CASA" + " A\t" + "| " + "ARBOL" + " J\t" + "Movimiento hacia izquierda\n");
+            Console.WriteLine("CASA" + " S\t" + "| " + "ARBOL" + " K\t" + "Movimiento hacia abajo\n");
+            Console.WriteLine("CASA" + " D\t" + "| " + "ARBOL" + " L\t" + "Movimiento hacia derecha\n");
+            Console.WriteLine("CASA" + " W\t" + "| " + "ARBOL" + " I\t" + "Movimiento hacia arriba\n");
+            Console.WriteLine("CASA" + " Z\t" + "| " + "ARBOL" + " B\t" + "Rotacion en Z\n");
+            Console.WriteLine("CASA" + " X\t" + "| " + "ARBOL" + " N\t" + "Rotacion en X\n");
+            Console.WriteLine("CASA" + " C\t" + "| " + "ARBOL" + " M\t" + "Rotacion en Y\n");
+            Console.WriteLine("CASA" + " E\t" + "| " + "ARBOL" + " Y\t" + "Escala positiva\n");
+            Console.WriteLine("CASA" + " R\t" + "| " + "ARBOL" + " U\t" + "Escala Negativa\n");
+            Console.WriteLine("CASA" + " F\t" + "| " + "ARBOL" + " G\t" + "Shear en X\n");
+            Console.WriteLine("CASA" + " V\t" + "| " + "ARBOL" + " H\t" + "Shear en Y\n");
+            Console.WriteLine("CASA" + " A\t" + "| " + "ARBOL" + " J\t" + "Movimiento hacia izquierda\n");
+            Console.WriteLine("CASA" + " T\t" + "| " + "Abrir Puerta\n");
         }
     }
 }
